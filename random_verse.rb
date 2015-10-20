@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+#
+#  Print some random verses from the Hebrew Bible (expected in hebrew_bible.txt)
+#
+
+def lines
+  @lines ||= File.readlines('hebrew_bible.txt').select {|line| line =~ /\S/ }
+end
+
+VERSE_REF_PATTERN = /[A-Z][a-z]+\. \d+/
+
+def random_verse_in(range)
+  a, b = range.first, range.last
+  n = rand(b - a) + a
+  while lines[n] !~ VERSE_REF_PATTERN && n < b
+    n += 1
+  end
+  n = a if n >= b
+  [n, *lines[n, 2]]
+end
+
+def first_line_matching(pattern)
+  lines.index(lines.grep(pattern).first)
+end
+
+start = 86  # first_line_matching /Gen. 1:1/
+finish = 46661  # first_line_matching(/Credits/) - 1
+
+break_points = [86, 11797, 20441, 30414, 35577, 46662]  # Gen, Josh, Isa, Psalms, Job, Credits
+
+groups = {
+  "Torah" => (86...11797),
+  "History" =>    (11797...20441),
+  "Prophets" =>           (20441...30414),
+  "Psalms" =>                     (30414...35577),
+  "Other Writings" =>                     (35577...46662),
+}
+
+verses = {}
+
+groups.each do |group_name, range|
+  verses[group_name] = random_verse_in(range)
+end
+
+verses = verses.sort_by {|group_name, (n, ref, content)| n }
+
+puts "Here is a random selection of verses from the Hebrew Bible."
+puts verses.map {|group_name, (n, ref, content)| [group_name, content] }
+puts "References below."
+50.times { puts }
+puts "References:"
+puts verses.map {|group_name, (n, ref, content)| "#{group_name}: #{ref.strip} - http://biblia.com/books/niv2011/#{ref.strip.gsub(' ', '%20')}" }
