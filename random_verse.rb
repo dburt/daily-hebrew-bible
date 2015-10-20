@@ -3,6 +3,9 @@
 #  Print some random verses from the Hebrew Bible (expected in hebrew_bible.txt)
 #
 
+require 'rubygems'
+require 'mail'
+
 def lines
   @lines ||= File.readlines('hebrew_bible.txt').select {|line| line =~ /\S/ }
 end
@@ -28,7 +31,7 @@ finish = 46661  # first_line_matching(/Credits/) - 1
 
 break_points = [86, 11797, 20441, 30414, 35577, 46662]  # Gen, Josh, Isa, Psalms, Job, Credits
 
-groups = {
+GROUPS = {
   "Torah" => (86...11797),
   "History" =>    (11797...20441),
   "Prophets" =>           (20441...30414),
@@ -36,17 +39,35 @@ groups = {
   "Other Writings" =>                     (35577...46662),
 }
 
-verses = {}
-
-groups.each do |group_name, range|
-  verses[group_name] = random_verse_in(range)
+def random_verses
+  verses = {}
+  GROUPS.each do |group_name, range|
+    verses[group_name] = random_verse_in(range)
+  end
+  verses.sort_by {|group_name, (n, ref, content)| n }
 end
 
-verses = verses.sort_by {|group_name, (n, ref, content)| n }
+def mail_body
+  verses = random_verses
+  <<-END
+  Here is a random selection of verses from the Hebrew Bible.
+  #{verses.map {|group_name, (n, ref, content)| "#{group_name}\n#{content}" }}
+  References below.
+  #{ "\n" * 50 }
+  References:
+  #{verses.map {|group_name, (n, ref, content)| "#{group_name}: #{ref.strip} - http://biblia.com/books/niv2011/#{ref.strip.gsub(' ', '%20')}\n" }}
+  END
+end
 
-puts "Here is a random selection of verses from the Hebrew Bible."
-puts verses.map {|group_name, (n, ref, content)| [group_name, content] }
-puts "References below."
-50.times { puts }
-puts "References:"
-puts verses.map {|group_name, (n, ref, content)| "#{group_name}: #{ref.strip} - http://biblia.com/books/niv2011/#{ref.strip.gsub(' ', '%20')}" }
+puts mail_body
+
+__END__
+
+mail = Mail.new do
+  from 'dave@burt.id.au'
+  to 'ridley-daily-hebrew-bible@googlegroups.com'
+  subject 'Ridley Daily Hebrew Bible'
+  content_type 'text/plain; charset=UTF-8'
+  body mail_body
+end
+mail.deliver!
