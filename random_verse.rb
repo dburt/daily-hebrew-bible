@@ -53,13 +53,17 @@ def mail_body
   ERB.new(File.read("random_verse.erb")).result(binding)
 end
 
+def human_date
+  (Date.today + 1).strftime("%d %b %Y")
+end
+
 #puts mail_body
 #__END__
 
 mail = Mail.new do
   from 'dave@burt.id.au'
   to 'ridley-daily-hebrew-bible@googlegroups.com'
-  subject 'Ridley Daily Hebrew Bible'
+  subject "Ridley Daily Hebrew Bible for " + human_date
   content_type 'text/html; charset=UTF-8'
   body mail_body
 end
