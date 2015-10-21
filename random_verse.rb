@@ -59,9 +59,8 @@ def mail_body
   END
 end
 
-puts mail_body
-
-__END__
+#puts mail_body
+#__END__
 
 mail = Mail.new do
   from 'dave@burt.id.au'
@@ -70,4 +69,5 @@ mail = Mail.new do
   content_type 'text/plain; charset=UTF-8'
   body mail_body
 end
+mail.delivery_method :sendmail
 mail.deliver!
