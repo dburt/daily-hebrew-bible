@@ -1,0 +1,26 @@
+<p>Hi,</p>
+<p>Here is today's random selection of verses from the Hebrew Bible.</p>
+<table>
+  <tr>
+    <th>Section</th>
+    <th>Verse Content</th>
+    <th>Ref</th>
+    <th>Link</th>
+  </tr>
+  <% verses.each do |group_name, (n, ref, content)| %>
+    <tr>
+      <td>
+        <%= group_name %>
+      </td>
+      <td style="font-family:serif; font-size:24px" lang="he" dir="rtl">
+        <%= content %>
+      </td>
+      <td style="background:black; color:black">
+        <%= ref %>
+      </td>
+      <td>
+        <a href="http://biblia.com/books/niv2011/<%= ref.gsub(' ', '%20') %>">look up</a>
+      </td>
+    </tr>
+  <% end %>
+</table>

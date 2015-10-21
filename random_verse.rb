@@ -5,6 +5,7 @@
 
 require 'rubygems'
 require 'mail'
+require 'erb'
 
 def lines
   @lines ||= File.readlines('hebrew_bible.txt').select {|line| line =~ /\S/ }
@@ -19,7 +20,7 @@ def random_verse_in(range)
     n += 1
   end
   n = a if n >= b
-  [n, *lines[n, 2]]
+  [n, lines[n].strip, lines[n + 1].strip]
 end
 
 def first_line_matching(pattern)
@@ -49,14 +50,7 @@ end
 
 def mail_body
   verses = random_verses
-  <<-END
-  Here is a random selection of verses from the Hebrew Bible.
-  #{verses.map {|group_name, (n, ref, content)| "#{group_name}\n#{content}" }}
-  References below.
-  #{ "\n" * 50 }
-  References:
-  #{verses.map {|group_name, (n, ref, content)| "#{group_name}: #{ref.strip} - http://biblia.com/books/niv2011/#{ref.strip.gsub(' ', '%20')}\n" }}
-  END
+  ERB.new(File.read("random_verse.erb")).result(binding)
 end
 
 #puts mail_body
@@ -66,7 +60,7 @@ mail = Mail.new do
   from 'dave@burt.id.au'
   to 'ridley-daily-hebrew-bible@googlegroups.com'
   subject 'Ridley Daily Hebrew Bible'
-  content_type 'text/plain; charset=UTF-8'
+  content_type 'text/html; charset=UTF-8'
   body mail_body
 end
 mail.delivery_method :sendmail
