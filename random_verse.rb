@@ -6,12 +6,26 @@
 require 'rubygems'
 require 'mail'
 require 'erb'
+require 'date'
 
 def lines
   @lines ||= File.readlines('hebrew_bible.txt').select {|line| line =~ /\S/ }
 end
 
 VERSE_REF_PATTERN = /[A-Z][a-z]+\. \d+/
+SERIAL_VERSE_START = Date.new(2015, 12, 7)
+
+def verses
+  @verses ||= begin
+    [].tap do |verses|
+      lines.each_with_index do |line, i|
+        if lines[i] =~ VERSE_REF_PATTERN
+          verses << verse_at_line(i)
+        end
+      end
+    end
+  end
+end
 
 def random_verse_in(range)
   a, b = range.first, range.last
@@ -20,11 +34,20 @@ def random_verse_in(range)
     n += 1
   end
   n = a if n >= b
+  verse_at_line(n)
+end
+
+def verse_at_line(n)
   [n, lines[n].strip, lines[n + 1].strip]
 end
 
 def first_line_matching(pattern)
   lines.index(lines.grep(pattern).first)
+end
+
+def serial_verse
+  n = Date.today - SERIAL_VERSE_START
+  verses[n]
 end
 
 start = 86  # first_line_matching /Gen. 1:1/
@@ -49,7 +72,7 @@ def random_verses
 end
 
 def mail_body
-  verses = random_verses
+  verses = [["Serial", serial_verse]] + random_verses
   ERB.new(File.read("random_verse.erb")).result(binding)
 end
 
