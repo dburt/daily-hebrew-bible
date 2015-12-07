@@ -7,7 +7,7 @@
     <th>Section</th>
     <th>Verse Content</th>
     <th>Ref</th>
-    <th>Link</th>
+    <th>Links</th>
   </tr>
   <% verses.each do |group_name, (n, ref, content)| %>
     <tr>
@@ -21,7 +21,10 @@
         <%= ref %>
       </td>
       <td>
-        <a href="http://biblia.com/books/niv2011/<%= ref.gsub(' ', '%20') %>">look up</a>
+        <a href="http://ref.ly/<%= ref.book %><%=ref.english_verse.sub(':', '.') %>;leb">English</a>
+        <a href="http://ref.ly/<%= ref.book %><%=ref.hebrew_verse.sub(':', '.') %>;wivumorph">Hebrew</a>
+        <a href="logosref:BibleBHS.<%= ref.book %>%20<%=ref.hebrew_verse %>">Logos</a>
+        <a href="logosres:wivumorph;ref=BibleBHS.<%= ref.book %>%20<%=ref.hebrew_verse %>">Logos:Hebrew</a>
       </td>
     </tr>
   <% end %>
