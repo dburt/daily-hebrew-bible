@@ -41,7 +41,7 @@ def verse_at_line(n)
 end
 
 class VerseRef
-  PATTERN = /([A-Z][a-z]+)\. (\d+:\d+)(?: \[Eng=(\d+:\d+)\])?/
+  PATTERN = /([1-4]?[A-Z][a-z]+)\. (\d+:\d+)(?: \[Eng=(\d+:\d+)\])?/
   def initialize(line)
     @match = line.strip.match(PATTERN)
   end
