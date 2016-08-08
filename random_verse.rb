@@ -57,6 +57,57 @@ class VerseRef
   def english_verse
     @match[3] || @match[2]
   end
+
+  BIBLEHUB_MAP = {
+    "Gen"  => "genesis",
+    "Exod" => "exodus",
+    "Lev"  => "leviticus",
+    "Num"  => "numbers",
+    "Deut" => "deuteronomy",
+    "Josh" => "joshua",
+    "Judg" => "judges",
+    "Ruth" => "ruth",
+    "1Sa"  => "1_samuel",
+    "2Sa"  => "2_samuel",
+    "1Kgs" => "1_kings",
+    "2Kgs" => "2_kings ",
+    "1Chr" => "1_chronicles",
+    "2Chr" => "2_chronicles",
+    "Ezra" => "ezra",
+    "Neh"  => "nehemiah",
+    "Esth" => "esther",
+    "Job"  => "job",
+    "Pss"  => "psalms",
+    "Prov" => "proverbs",
+    "Eccl" => "ecclesiastes",
+    "Song" => "songs",
+    "Isa"  => "isaiah",
+    "Jer"  => "jeremiah",
+    "Lam"  => "lamentations",
+    "Ezek" => "ezekiel",
+    "Dan"  => "daniel",
+    "Hos"  => "hosea",
+    "Joel" => "joel",
+    "Amos" => "amos",
+    "Obad" => "obadiah",
+    "Jon"  => "jonah",
+    "Mic"  => "micah",
+    "Nah"  => "nahum",
+    "Hab"  => "habakkuk",
+    "Zeph" => "zephaniah",
+    "Hagg" => "haggai",
+    "Zech" => "zechariah",
+    "Mal"  => "malachi",
+  }
+
+  def biblehub_url(prefix="")
+    "http://biblehub.com/#{prefix}/#{BIBLEHUB_MAP[book]}/#{english_verse.sub(':', '-')}.htm"
+  end
+
+  def refly_url(bible)
+    # "http://ref.ly/#{bk}#{ch}.#{v};#{bible}"
+    "http://ref.ly/#{book}#{english_verse.sub(':', '.')};#{bible}"
+  end
 end
 
 def first_line_matching(pattern)
@@ -99,8 +150,12 @@ def human_date
   (Date.today + 1).strftime("%d %b %Y")
 end
 
+Encoding.default_external = 'utf-8' \
+  rescue STDERR.puts("warning: couldn't set default external encoding")
+
 ## DEBUG
 #puts mail_body
+#exit
 #__END__
 
 mail = Mail.new do
