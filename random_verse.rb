@@ -67,8 +67,8 @@ class VerseRef
     "Josh" => "joshua",
     "Judg" => "judges",
     "Ruth" => "ruth",
-    "1Sa"  => "1_samuel",
-    "2Sa"  => "2_samuel",
+    "1Sam"  => "1_samuel",
+    "2Sam"  => "2_samuel",
     "1Kgs" => "1_kings",
     "2Kgs" => "2_kings ",
     "1Chr" => "1_chronicles",
@@ -150,7 +150,7 @@ def human_date
   (Date.today + 1).strftime("%d %b %Y")
 end
 
-Encoding.default_external = 'utf-8' \
+(Encoding.default_external = 'utf-8') \
   rescue STDERR.puts("warning: couldn't set default external encoding")
 
 ## DEBUG
