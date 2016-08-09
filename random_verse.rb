@@ -67,10 +67,10 @@ class VerseRef
     "Josh" => "joshua",
     "Judg" => "judges",
     "Ruth" => "ruth",
-    "1Sam"  => "1_samuel",
-    "2Sam"  => "2_samuel",
+    "1Sam" => "1_samuel",
+    "2Sam" => "2_samuel",
     "1Kgs" => "1_kings",
-    "2Kgs" => "2_kings ",
+    "2Kgs" => "2_kings",
     "1Chr" => "1_chronicles",
     "2Chr" => "2_chronicles",
     "Ezra" => "ezra",
@@ -160,7 +160,8 @@ end
 
 mail = Mail.new do
   from 'dave@burt.id.au'
-  to 'ridley-daily-hebrew-bible@googlegroups.com'
+  to 'dave@burt.id.au'
+  #to 'ridley-daily-hebrew-bible@googlegroups.com'
   subject "Ridley Daily Hebrew Bible for " + human_date
   content_type 'text/html; charset=UTF-8'
   body mail_body
