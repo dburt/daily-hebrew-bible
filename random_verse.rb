@@ -160,8 +160,7 @@ end
 
 mail = Mail.new do
   from 'dave@burt.id.au'
-  to 'dave@burt.id.au'
-  #to 'ridley-daily-hebrew-bible@googlegroups.com'
+  to 'ridley-daily-hebrew-bible@googlegroups.com'
   subject "Ridley Daily Hebrew Bible for " + human_date
   content_type 'text/html; charset=UTF-8'
   body mail_body
