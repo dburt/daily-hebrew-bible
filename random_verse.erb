@@ -1,34 +1,47 @@
-<div lang="en" dir="ltr">
+<html>
+<head>
 <meta name="format-detection" content="date=no"><!-- there are no dates in this email to link to calendars, and verse refs are not times -->
+<style>
+/* thanks removebluelinks.com */
+a[x-apple-data-detectors] {
+  color: inherit !important;
+  text-decoration: none !important;
+  font-size: inherit !important;
+  font-family: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+}
+a, a:link, a:visited, a:hover, a:active {
+  color: #66f;
+}
+* { font-family: serif; }
+</style>
+</head>
+<body lang="en">
 
 <p>Hi,</p>
 <p>Here is today's selection of verses from the Hebrew Bible.</p>
-<table>
-  <tr>
-    <th>Section</th>
-    <th>Verse Content</th>
-    <th>Ref</th>
-    <th>Links</th>
-  </tr>
-  <% verses.each do |group_name, (n, ref, content)| %>
-    <tr>
-      <td>
-        <%= group_name %>
-      </td>
-      <td style="font-family:serif; font-size:24px" lang="he" dir="rtl">
-        <%= content %>
-      </td>
-      <td style="background:black; color:black">
-        <%= ref %>
-      </td>
-      <td>
-        <a href="<%= ref.refly_url("wivumorph") %>">Hebrew</a>
-        <a href="<%= ref.biblehub_url("text") %>">Parsed</a>
-        <a href="<%= ref.biblehub_url("interlinear") %>">Interlinear</a>
-        <a href="<%= ref.biblehub_url %>">English</a>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<% verses.each do |group_name, (n, ref, content)| %>
+  <h2 style="color: #999; text-align: right">
+    <%= group_name %>
+  </h2>
+  <p style="font-family:serif; font-size:24px" lang="he" dir="rtl">
+    <%= content %>
+  </p>
+  <p style="color: #999; text-align: right">
+    Ref:
+    <span style="background:#666; color:#666">
+      <%= ref %>
+    </span>
+    &nbsp;
+    <span>
+      <a href="<%= ref.refly_url("wivumorph") %>">Hebrew</a>
+      <a href="<%= ref.biblehub_url("text") %>">Parsed</a>
+      <a href="<%= ref.biblehub_url("interlinear") %>">Interlinear</a>
+      <a href="<%= ref.biblehub_url %>">English</a>
+    </span>
+  </p>
+<% end %>
 
-</div>
+</body>
+</html>
